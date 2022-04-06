@@ -3,10 +3,61 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Introduction.WpfApp.ViewModels"
         xmlns:local="clr-namespace:Introduction.WpfApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:StudentsViewModel></vm:StudentsViewModel>
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate x:Key="studentTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock Text="{Binding Path=MatriculationNumber}" FontSize="22" Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DataItemWidth}" Margin="5"></TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <TextBlock Text="{Binding Path=Firstname}" Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DataItemWidth}" Margin="10 5 5 0"></TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <TextBlock Text="{Binding Path=Lastname}" Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DataItemWidth}" Margin="10 5 5 0"></TextBlock>
+                </StackPanel>
+                <Button Grid.Row="3" 
+                        Margin="15" 
+                        MinWidth="200"
+                        Background="Red"
+                        Foreground="White"
+                        Visibility="{Binding DeleteVisible}"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.CommandDelete}"
+                        CommandParameter="{Binding Path=Id}">Löschen</Button>
+
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40*"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="55*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Stretch="Uniform" Source="Images/informatik_ai.jpg" />
+        <Button Grid.Row="1" Margin="0 0 10 0" Command="{Binding Path=CommandAdd}" MaxWidth="200" HorizontalAlignment="Right" >Add</Button>
+        <ListView Grid.Row="2"
+                  Background="AliceBlue"
+                  Margin="10"
+                  ItemsSource="{Binding Students}"
+                  ItemTemplate="{StaticResource ResourceKey=studentTemplate}">
+        </ListView>
 
     </Grid>
 </Window>
